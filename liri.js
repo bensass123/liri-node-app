@@ -95,16 +95,3 @@ function run(command){
 
 run(command);
 
-
-//commands
-// * `my-tweets`
-
-// * `spotify-this-song`
-
-// * `movie-this`
-
-// * `do-what-it-says`
-
-
-
-
