@@ -52,12 +52,12 @@ function spotifySong(){
 		if (err) {
 			console.log(err);
 		}
-		console.log(data.tracks.items[0].artists[0].name);
-		console.log(data.tracks.items[0].name);
+		console.log('Artist name:   	' + data.tracks.items[0].artists[0].name);
+		console.log('Song name:     	' + data.tracks.items[0].name);
 		//preview link and album
 		// console.log(data.tracks.items[0]);
-		console.log(data.tracks.items[0].preview_url);
-		console.log(data.tracks.items[0].album.name);
+		console.log('Preview URL:   	' + data.tracks.items[0].preview_url);
+		console.log('Album name:    	' + data.tracks.items[0].album.name);
 	});
 }
 
