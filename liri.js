@@ -5,6 +5,7 @@ var T = require('twitter');
 var S = require('spotify');
 var R = require('request');
 var fs = require('fs');
+var imdb = require('imdb-api');
 var p = process.argv;
 
 var command = p[2];
@@ -33,14 +34,46 @@ var client = new T({
   access_token_secret: access_token_secret
 });
 
+function movie(){
+	var movie;
+ 	if (!arg2) {
+ 		arg2 = 'mr nobody';
+ 	}
+
+	imdb.getReq({ name: arg2 }, (err, things) => {
+	    movie = things;
+	    console.log('\r\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n');
+	    console.log('Title:         ' + movie.title +'\r\n');
+	    console.log('Year:          ' + movie.year +'\r\n');
+	    console.log('Rating:        ' + movie.rating +'\r\n');
+	    console.log('Country:       ' + movie.country +'\r\n');
+	    console.log('Language(s):   ' + movie.languages +'\r\n');
+	    console.log('Actors:        ' + movie.actors +'\r\n');
+	    console.log('Plot:          ' + movie.plot +'\r\n');
+	    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+	});
+}
+
+    // * Title of the movie.
+    // * Year the movie came out.
+    // * IMDB Rating of the movie.
+    // * Country where the movie was produced.
+    // * Language of the movie.
+    // * Plot of the movie.
+    // * Actors in the movie.
+    // * Rotten Tomatoes Rating.
+    // * Rotten Tomatoes URL.
+
 
 function myTweets() {
 	client.get('statuses/user_timeline', 'bigllamashouse', function(error, tweets, response) {
 	 	if(error) throw error;
+	 	console.log('\r\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n\r\n');
 		for (i in tweets) {
-		  	console.log(tweets[i].created_at);
-		  	console.log(tweets[i].text);
+		  	console.log('Timestamp:           ' + tweets[i].created_at);
+		  	console.log('Text:                ' + tweets[i].text + '\r\n\r\n');
 	  	}
+	  	console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n');
 	});
 }
 
@@ -52,18 +85,19 @@ function spotifySong(){
 		if (err) {
 			console.log(err);
 		}
+		console.log('\r\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n');
 		console.log('Artist name:   	' + data.tracks.items[0].artists[0].name);
 		console.log('Song name:     	' + data.tracks.items[0].name);
 		//preview link and album
 		// console.log(data.tracks.items[0]);
 		console.log('Preview URL:   	' + data.tracks.items[0].preview_url);
 		console.log('Album name:    	' + data.tracks.items[0].album.name);
+		console.log('\r\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n');
 	});
 }
 
 function doit() {
 	var string = fs.readFileSync('random.txt', 'utf8');
-	console.log(string);
 	string = string.split(',');
 	arg2 = string[1];
 	command = string[0];
@@ -84,7 +118,7 @@ function run(command){
 			spotifySong();
 			break;
 		case 'movie-this':
-			
+			movie();
 			break;
 		case 'do-what-it-says':
 			doit();
